@@ -12,77 +12,57 @@
         presentation="date"
       ></ion-datetime>
       <ion-button expand="block" id="open-modal">
-        Настроить
-        <ion-icon aria-hidden="true" icon='alarm.svg' class="drop-icon" style="margin-left: 10px;"/>
+        Изменить
+        <ion-icon aria-hidden="true" icon='alarm.svg' style="margin-left: 10px;"/>
       </ion-button>
-      <ion-modal ref="modal" trigger="open-modal">
+      <ion-modal ref="modal" trigger="open-modal" @trata="setCalciumFreq">
         <ion-content>
           <ion-toolbar>
-            <ion-title>Modal</ion-title>
+            <ion-title>Оповещения</ion-title>
             <ion-buttons slot="end">
-              <ion-button color="light" @click="save()">Close</ion-button>
+              <ion-button color="light" @click="dismiss">
+                <ion-icon aria-hidden="true" icon='close.svg' class="ali"/>
+              </ion-button>
             </ion-buttons>
           </ion-toolbar>
           <ion-list>
             <ion-item>
               <ion-avatar slot="start">
-                <ion-img src="https://i.pravatar.cc/300?u=b"></ion-img>
+                <ion-img src="calcium.jpeg"></ion-img>
               </ion-avatar>
               <ion-label>
-                <h2>Connor Smith</h2>
-                <p>Sales Rep</p>
+                <h2>Кальций</h2>
               </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-avatar slot="start">
-                <ion-img src="https://i.pravatar.cc/300?u=a"></ion-img>
-              </ion-avatar>
-              <ion-label>
-                <h2>Daniel Smith</h2>
-                <p>Product Designer</p>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-avatar slot="start">
-                <ion-img src="https://i.pravatar.cc/300?u=d"></ion-img>
-              </ion-avatar>
-              <ion-label>
-                <h2>Greg Smith</h2>
-                <p>Director of Operations</p>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-avatar slot="start">
-                <ion-img src="https://i.pravatar.cc/300?u=e"></ion-img>
-              </ion-avatar>
-              <ion-label>
-                <h2>Zoey Smith</h2>
-                <p>CEO</p>
-              </ion-label>
+              
+              <ion-select
+                justify="end"
+                value="twice"
+                id="calciumFreq"
+                interface="action-sheet"
+                slot="end"
+                aria-label="Кальций"
+                style="min-width: 140px;"
+                v-model="calciumFreq">
+                <ion-select-option value="once">Один раз в день</ion-select-option>
+                <ion-select-option value="twice">Два раза в день</ion-select-option>
+                <ion-select-option value="off">Откл</ion-select-option>
+              </ion-select>
+              
+              <ion-datetime-button datetime="time" presentation="time"></ion-datetime-button>
+              
+              <ion-modal :keep-contents-mounted="true">
+                <ion-datetime
+                  id="time"
+                  interface="action-sheet"
+                  locale="ru-RU"
+                  presentation="time"></ion-datetime>
+              </ion-modal>
             </ion-item>
           </ion-list>
         </ion-content>
       </ion-modal>
         <ion-row>
-          <ion-text>
-            <h4 class="justify-self-center">Оповещения:</h4>
-          </ion-text>
-        </ion-row>
-        <ion-row>
-          <div>
-            <span>Кальций:</span>
-            <ion-select interface="popover">
-              <ion-select-option value="true">{{ time }}</ion-select-option>
-              <ion-select-option value="false">Откл</ion-select-option>
-            </ion-select>
-          </div>
-          <div>
-            <span>Ежедневно в:</span>
-            <ion-datetime interface="popover"
-                          locale="ru-RU"
-                          presentation="time"
-            ></ion-datetime>
-          </div>
+        
         </ion-row>
     </ion-content>
   </ion-page>
@@ -112,6 +92,8 @@ import {
   IonLabel,
   IonPage,
   IonIcon,
+  IonSelect,
+  IonSelectOption,
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
 
@@ -131,9 +113,12 @@ export default defineComponent({
     IonLabel,
     IonPage,
     IonIcon,
+    IonSelect,
+    IonSelectOption,
   },
   data() {
     return {
+      calciumFreq: 'twice',
       alertsToggle: [
         {
           label: 'Вкл',
@@ -163,8 +148,13 @@ export default defineComponent({
     dismiss() {
       this.$refs.modal.$el.dismiss();
     },
+    setCalciumFreq(val) {
+      console.log('da')
+      console.log(val)
+      this.calciumFreq = val
+    },
   },
-});
+})
 </script>
 
 <style>
@@ -187,13 +177,19 @@ ion-modal {
   --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-ion-modal::part(backdrop) {
-  background: rgba(209, 213, 219);
-  opacity: 1;
+ion-modal ion-toolbar {
+  --background: rgb(56, 128, 255);
+  --color: white;
 }
 
-ion-modal ion-toolbar {
-  --background: rgb(14 116 144);
-  --color: white;
+ion-modal ion-toolbar ion-button {
+  background-color: rgb(47, 116, 236);
+  border-radius: 6px;
+  padding: 0 8px;
+}
+
+ion-avatar {
+  width: 70px;
+  height: 70px;
 }
 </style>

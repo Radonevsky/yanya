@@ -6,7 +6,7 @@ import Period from "../views/Periods.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/tabs/vitamins",
+    redirect: "/tabs/vitamin",
   },
   {
     path: "/tabs/",
